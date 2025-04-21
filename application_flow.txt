@@ -1,0 +1,85 @@
+Memory Management Simulator - Application Flow Documentation
+
+1. System Architecture Overview
+   - Frontend (HTML/CSS/JavaScript)
+   - Backend (Node.js/Express.js)
+   - Core Logic (C++)
+
+2. Data Flow Sequence
+
+   a. User Interaction (Frontend)
+      - User inputs memory management parameters
+      - User selects memory management algorithm
+      - User triggers memory allocation/deallocation requests
+      - Frontend sends API requests to backend
+
+   b. Backend Processing (Node.js)
+      - Express.js server receives API requests
+      - Validates and processes incoming requests
+      - Communicates with C++ module via child processes
+      - Handles response formatting and error handling
+
+   c. Core Logic Processing (C++)
+      - Receives memory management requests
+      - Executes selected memory management algorithm
+      - Processes memory allocation/deallocation
+      - Generates memory state as JSON output
+      - Returns results to backend
+
+   d. Visualization Flow (Frontend)
+      - Receives processed data from backend
+      - Updates memory block visualization
+      - Displays process queue status
+      - Shows memory statistics
+      - Renders algorithm performance metrics
+
+3. Component Communication
+
+   Frontend → Backend:
+   - HTTP/API requests for memory operations
+   - Algorithm selection parameters
+   - Memory block size requirements
+   - Process information
+
+   Backend → C++ Module:
+   - Memory management algorithm selection
+   - Memory allocation requests
+   - Process queue management
+   - Memory state queries
+
+   C++ Module → Backend:
+   - Memory allocation results
+   - Current memory state
+   - Algorithm performance metrics
+   - Error status and messages
+
+   Backend → Frontend:
+   - JSON formatted memory state
+   - Operation success/failure status
+   - Updated process queue information
+   - Performance statistics
+
+4. Memory Management Algorithms
+   - First Fit
+   - Best Fit
+   - Worst Fit
+   - Next Fit
+   Each algorithm processes memory requests differently while maintaining:
+   - Memory block allocation
+   - Fragment management
+   - Process tracking
+   - Memory state consistency
+
+5. Error Handling
+   - Frontend: User input validation
+   - Backend: Request validation and API error handling
+   - C++ Module: Memory management error handling
+   - Cross-component error propagation
+
+6. Performance Considerations
+   - Asynchronous communication
+   - Efficient memory state updates
+   - Optimized visualization rendering
+   - Minimal data transfer overhead
+
+This documentation provides a comprehensive overview of how data and control flow through the Memory Management Simulator application, helping developers understand the system architecture and component interactions.

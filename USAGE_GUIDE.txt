@@ -1,0 +1,247 @@
+Memory Management Simulator - Usage Guide
+
+This guide provides detailed micro-instructions for demonstrating and understanding different memory management algorithms through practical examples.
+
+1. Basic Operations
+----------------
+a) Allocating Memory:
+   - Click the "Process Size" input field
+   - Type a specific size (e.g., 64 for 64KB)
+   - Click the "Algorithm" dropdown menu
+   - Select your desired algorithm
+   - Click the blue "Allocate Memory" button
+   - Watch the memory map update with a new colored block
+
+b) Deallocating Memory:
+   - Look at the "Process ID" dropdown list
+   - Click to expand the list
+   - Select the ID you want to remove (e.g., P1, P2)
+   - Click the red "Deallocate Memory" button
+   - Observe the block disappear from memory map
+
+c) Simulation Controls:
+   - Play Button: Click to start automatic simulation
+     * Watch processes automatically allocate/deallocate
+     * Observe memory map changes in real-time
+   - Pause Button: Click to freeze the simulation
+     * Current state remains visible
+     * Manual controls become active again
+   - Reset Button: Click to start fresh
+     * All blocks clear instantly
+     * Statistics reset to zero
+     * Memory map returns to empty state
+
+2. Demonstrating Memory Management Algorithms
+----------------------------------------
+a) Fixed Partitioning:
+   Step-by-step demonstration:
+   1. Click "Algorithm" dropdown → Select "Fixed Partitioning"
+   2. Try these exact scenarios:
+      - Perfect Fit Example:
+        * Enter exactly "64" in size field
+        * Click "Allocate Memory"
+        * Look at memory map: One clean 64KB block appears
+        * Check utilization: Should show 100% for this block
+
+      - Internal Fragmentation Example:
+        * Type "40" in size field
+        * Click "Allocate Memory"
+        * Observe memory map: 64KB block used
+        * Look for wasted space indicator: 24KB unused
+        * Check utilization: Should show ~62.5%
+
+      - Multiple Block Example:
+        * Enter and allocate in this order:
+          1. Type "64" → Allocate
+          2. Type "128" → Allocate
+          3. Type "64" → Allocate
+        * Verify memory map shows:
+          - Three distinct colored blocks
+          - Aligned at partition boundaries
+          - No gaps between blocks
+
+b) Dynamic Partitioning:
+   Step-by-step demonstration:
+   1. Select "Dynamic Partitioning" from algorithm list
+   2. Follow these exact patterns:
+      - Mixed Size Allocation:
+        * Enter these sizes in order:
+          1. Type "50" → Allocate
+          2. Type "120" → Allocate
+          3. Type "75" → Allocate
+        * Verify in memory map:
+          - Exactly 50KB block
+          - Exactly 120KB block
+          - Exactly 75KB block
+          - No wasted space between
+
+      - Fragmentation Example:
+        * Clear memory (click Reset)
+        * Allocate in this sequence:
+          1. Type "100" → Allocate (P1)
+          2. Type "200" → Allocate (P2)
+          3. Type "150" → Allocate (P3)
+        * Select P2 (200KB block)
+        * Click "Deallocate Memory"
+        * Try to allocate 180KB
+        * Expected: Allocation fails
+        * Observe: 200KB gap exists but is fragmented
+
+c) Paging:
+   Step-by-step demonstration:
+   1. Select "Paging" from algorithm dropdown
+   2. Click page replacement dropdown → Choose "FIFO"
+   3. Execute these scenarios:
+      - Basic Page Allocation:
+        * Enter "256" (exactly 4 pages)
+        * Click "Allocate Memory"
+        * Observe page table:
+          - 4 page entries created
+          - Each page = 64KB
+          - Sequential frame numbers
+
+      - Page Fault Creation:
+        * Set physical memory limit low
+        * Allocate these sizes in order:
+          1. Type "192" → Allocate
+          2. Type "128" → Allocate
+          3. Type "256" → Allocate
+        * Watch page fault counter increase
+        * Observe page replacements in table
+
+      - FIFO vs LRU Comparison:
+        * Reset memory
+        * With FIFO selected:
+          1. Allocate 128KB, 192KB, 256KB
+          2. Note page fault count
+        * Switch to LRU
+        * Repeat same allocation pattern
+        * Compare fault counts
+
+d) Segmentation:
+   Step-by-step demonstration:
+   1. Choose "Segmentation" from dropdown
+   2. Create segments in this order:
+      - Code Segment:
+        * Type "64" in size field
+        * Enter "CODE" in segment name
+        * Click "Allocate Memory"
+        * Verify in segment table:
+          - Base address shown
+          - Limit = 64KB
+          - Type = CODE
+
+      - Data Segments:
+        * Type "32" → Name "DATA" → Allocate
+        * Type "16" → Name "STACK" → Allocate
+        * Check segment table:
+          - Three distinct entries
+          - Different base addresses
+          - Protection bits set correctly
+
+e) Buddy System:
+   Step-by-step demonstration:
+   1. Select "Buddy System" algorithm
+   2. Execute these precise allocations:
+      - Power-of-2 Allocations:
+        * Enter these sizes in order:
+          1. Type "64" → Allocate
+          2. Type "128" → Allocate
+          3. Type "256" → Allocate
+        * Observe in memory map:
+          - Perfect block splits
+          - No fragmentation
+          - Aligned power-of-2 boundaries
+
+      - Non-power-of-2 Example:
+        * Type "70" in size field
+        * Click "Allocate Memory"
+        * Verify in memory map:
+          - 128KB block allocated
+          - 58KB internal fragmentation
+
+      - Buddy Merging Example:
+        * Reset memory
+        * Allocate in sequence:
+          1. Type "256" → Allocate (P1)
+          2. Type "128" → Allocate (P2)
+        * Select P1 from process list
+        * Click "Deallocate Memory"
+        * Watch memory map:
+          - Buddies automatically merge
+          - Single 512KB free block forms
+
+3. Performance Analysis Scenarios
+----------------------------
+a) Memory Utilization Test:
+   1. For each algorithm, follow these steps:
+      * Reset memory
+      * Allocate these exact sizes:
+        1. 64KB, 128KB, 32KB, 96KB
+        2. 256KB, 48KB, 128KB
+        3. 64KB, 32KB, 96KB
+      * Record these metrics:
+        - Total memory allocated
+        - Actual process sizes sum
+        - Fragmentation percentage
+
+b) Fragmentation Analysis:
+   1. Create fragmented state:
+      * Allocate six processes:
+        1. 128KB (P1)
+        2. 64KB  (P2)
+        3. 256KB (P3)
+        4. 96KB  (P4)
+        5. 128KB (P5)
+        6. 32KB  (P6)
+      * Deallocate in this order:
+        - P2, P4, P6
+   2. Try allocating 160KB
+   3. Compare results:
+      - Fixed: Note internal fragments
+      - Dynamic: See unusable gaps
+      - Buddy: Observe power-of-2 waste
+
+c) Page Replacement Test:
+   1. Configure memory:
+      * Set physical frames to 8
+      * Choose FIFO algorithm
+   2. Create page faults:
+      * Allocate in sequence:
+        1. 256KB (4 pages)
+        2. 192KB (3 pages)
+        3. 320KB (5 pages)
+      * Record fault count
+   3. Repeat with LRU:
+      * Reset memory
+      * Use same allocation pattern
+      * Compare fault numbers
+
+4. Tips for Effective Demonstration
+------------------------------
+- Always start with empty memory (click Reset)
+- Use exact sizes mentioned in guide
+- Watch memory map changes closely
+- Monitor all metrics during operations
+- Take screenshots of interesting states
+- Compare results between algorithms
+
+5. Troubleshooting Common Issues
+----------------------------
+a) Allocation Failures:
+   - Check available memory display
+   - Look for fragmentation indicators
+   - Verify algorithm limitations
+   - Try these steps:
+     1. Reset memory
+     2. Allocate smaller sizes
+     3. Use defragmentation if available
+
+b) Performance Issues:
+   - Click Reset to clear memory
+   - Reduce allocation sizes by half
+   - Deallocate largest processes
+   - Watch memory utilization gauge
+   - Monitor page fault counter
+
+Remember: Each algorithm has specific strengths. Use these exact steps to understand when each performs best. Take notes on the behaviors you observe.
